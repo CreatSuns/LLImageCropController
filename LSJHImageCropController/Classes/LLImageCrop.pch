@@ -1,0 +1,17 @@
+//
+//  LLImageCrop.pch
+//  LSJHImageCropController
+//
+//  Created by 李世航 on 2020/4/23.
+//
+
+#ifndef LLImageCrop_pch
+#define LLImageCrop_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import <LSJHCategory/LLCategory.h>
+#import <Masonry/Masonry.h>
+
+#endif /* LLImageCrop_pch */
