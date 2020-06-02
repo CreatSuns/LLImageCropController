@@ -1,6 +1,5 @@
 //
-//  WYAImageCropToolBar.h
-//  WYAKit
+//  LLImageCropToolBar.h
 //
 //  Created by 李世航 on 2018/12/3.
 //
@@ -9,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol WYAImageCropToolBarDelegate <NSObject>
+@protocol LLImageCropToolBarDelegate <NSObject>
 
 - (void)rotatingAction;
 
@@ -21,8 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface WYAImageCropToolBar : UIView
-@property (nonatomic, weak) id<WYAImageCropToolBarDelegate> delegate;
+@interface LLImageCropToolBar : UIView
+@property (nonatomic, weak) id<LLImageCropToolBarDelegate> delegate;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LSJHImageCropController'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'A short description of LSJHImageCropController.'
 
 # This description is used to generate tags and improve search results.
@@ -32,9 +32,9 @@ TODO: Add long description of the pod here.
   s.swift_version = '5.0'
   s.source_files = 'LSJHImageCropController/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'LSJHImageCropController' => ['LSJHImageCropController/Assets/*.png']
-  # }
+  s.resource_bundles = {
+    'LSJHImageCropController' => ['LSJHImageCropController/Assets/*.png']
+  }
 
   s.prefix_header_file = 'LSJHImageCropController/Classes/LLImageCrop.pch'
 

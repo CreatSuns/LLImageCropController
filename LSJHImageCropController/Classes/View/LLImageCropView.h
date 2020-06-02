@@ -1,26 +1,25 @@
 //
-//  WYAImageCropView.h
-//  WYAKit
+//  LLImageCropView.h
 //
 //  Created by 李世航 on 2018/12/3.
 //
 
-#import "WYAImageCrop.h"
+#import "LLImageCrop.h"
 #import <UIKit/UIKit.h>
 
-@class WYAImageCropPhotoFramesView;
-@class WYAImageCropView;
+@class LLImageCropPhotoFramesView;
+@class LLImageCropView;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol WYAImageCropViewDelegate <NSObject>
+@protocol LLImageCropViewDelegate <NSObject>
 
-- (void)cropViewDidBecomeResettable:(nonnull WYAImageCropView *)cropView;
-- (void)cropViewDidBecomeNonResettable:(nonnull WYAImageCropView *)cropView;
+- (void)cropViewDidBecomeResettable:(nonnull LLImageCropView *)cropView;
+- (void)cropViewDidBecomeNonResettable:(nonnull LLImageCropView *)cropView;
 
 @end
 
-@interface WYAImageCropView : UIView
+@interface LLImageCropView : UIView
 
 /**
  The image that the crop view is displaying. This cannot be changed once the crop view is
@@ -31,12 +30,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The cropping style of the crop view (eg, rectangular or circular)
  */
-@property (nonatomic, assign, readonly) WYACropViewCroppingStyle croppingStyle;
+@property (nonatomic, assign, readonly) LLCropViewCroppingStyle croppingStyle;
 
 /**
  A grid view overlaid on top of the foreground image view's container.
  */
-@property (nonnull, nonatomic, strong, readonly) WYAImageCropPhotoFramesView * gridOverlayView;
+@property (nonnull, nonatomic, strong, readonly) LLImageCropPhotoFramesView * gridOverlayView;
 
 /**
  A container view that clips the a copy of the image so it appears over the dimming view
@@ -46,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  A delegate object that receives notifications from the crop view
  */
-@property (nullable, nonatomic, weak) id<WYAImageCropViewDelegate> delegate;
+@property (nullable, nonatomic, weak) id<LLImageCropViewDelegate> delegate;
 
 /**
  If false, the user cannot resize the crop box frame using a pan gesture from a corner.
@@ -166,7 +165,7 @@ aspect ratio than defined by the parameter.
 /**
  Create a new instance of the crop view with the specified image and cropping
  */
-- (nonnull instancetype)initWithCroppingStyle:(WYACropViewCroppingStyle)style
+- (nonnull instancetype)initWithCroppingStyle:(LLCropViewCroppingStyle)style
                                         image:(nonnull UIImage *)image;
 
 /**

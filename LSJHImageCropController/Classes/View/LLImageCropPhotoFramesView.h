@@ -1,6 +1,5 @@
 //
-//  WYAImageCropPhotoFramesView.h
-//  WYAKit
+//  LLImageCropPhotoFramesView.h
 //
 //  Created by 李世航 on 2018/12/3.
 //
@@ -9,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WYAImageCropPhotoFramesView : UIView
+@interface LLImageCropPhotoFramesView : UIView
 
 /** Hides the interior grid lines, sans animation. */
 @property (nonatomic, assign) BOOL gridHidden;

@@ -1,31 +1,30 @@
 //
-//  WYAImageCropViewController.m
-//  WYAKit
+//  LLImageCropViewController.m
 //
 //  Created by 李世航 on 2018/12/3.
 //
 
-#import "WYAImageCropViewController.h"
-#import "WYAImageCropViewControllerTransitioning.h"
+#import "LLImageCropViewController.h"
+#import "LLImageCropViewControllerTransitioning.h"
 
 static const CGFloat kTOCropViewControllerTitleTopPadding = 14.0f;
 static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
 
-@interface WYAImageCropViewController () <UIActionSheetDelegate,
+@interface LLImageCropViewController () <UIActionSheetDelegate,
                                           UIViewControllerTransitioningDelegate,
-                                          WYAImageCropViewDelegate, WYAImageCropToolBarDelegate>
+                                          LLImageCropViewDelegate, LLImageCropToolBarDelegate>
 
 @property (nonatomic, readwrite) UIImage * image;
-@property (nonatomic, assign, readwrite) WYACropViewCroppingStyle croppingStyle;
+@property (nonatomic, assign, readwrite) LLCropViewCroppingStyle croppingStyle;
 
 // 视图
-@property (nonatomic, strong) WYAImageCropToolBar * toolbar;
-@property (nonatomic, strong, readwrite) WYAImageCropView * cropView;
+@property (nonatomic, strong) LLImageCropToolBar * toolbar;
+@property (nonatomic, strong, readwrite) LLImageCropView * cropView;
 @property (nonatomic, strong) UIView * toolbarSnapshotView;
 
 // 页面切换相关
 @property (nonatomic, copy) void (^prepareForTransitionHandler)(void);
-@property (nonatomic, strong) WYAImageCropViewControllerTransitioning * transitionController;
+@property (nonatomic, strong) LLImageCropViewControllerTransitioning * transitionController;
 @property (nonatomic, assign) BOOL inTransition;
 
 @property (nonatomic, assign) BOOL navigationBarHidden;
@@ -41,7 +40,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
 
 @property (nonatomic, assign) CGRect imageCropFrame;
 @property (nonatomic, assign) NSInteger angle;
-@property (nonatomic, assign) WYACropViewControllerAspectRatioPreset aspectRatioPreset;
+@property (nonatomic, assign) LLCropViewControllerAspectRatioPreset aspectRatioPreset;
 @property (nonatomic, assign) CGSize customAspectRatio; // 自定义长宽比，example:4:3 like this {4,3}
 @property (nonatomic, assign) BOOL aspectRatioLockDimensionSwapEnabled;
 @property (nonatomic, assign) BOOL aspectRatioLockEnabled;
@@ -50,9 +49,9 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
 @property (nonatomic, assign) BOOL hidesNavigationBar;
 @end
 
-@implementation WYAImageCropViewController
+@implementation LLImageCropViewController
 #pragma mark - LifeCircle
-- (instancetype)initWithCroppingStyle:(WYACropViewCroppingStyle)style image:(UIImage *)image
+- (instancetype)initWithCroppingStyle:(LLCropViewCroppingStyle)style image:(UIImage *)image
 {
     NSParameterAssert(image);
 
@@ -66,8 +65,8 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
         self.automaticallyAdjustsScrollViewInsets = NO;
         self.hidesNavigationBar                   = true;
 
-        _transitionController = [[WYAImageCropViewControllerTransitioning alloc] init];
-        _aspectRatioPreset    = WYACropViewControllerAspectRatioPresetOriginal;
+        _transitionController = [[LLImageCropViewControllerTransitioning alloc] init];
+        _aspectRatioPreset    = LLCropViewControllerAspectRatioPresetOriginal;
     }
 
     return self;
@@ -75,7 +74,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
 
 - (instancetype)initWithImage:(UIImage *)image
 {
-    return [self initWithCroppingStyle:WYACropViewCroppingStyleDefault image:image];
+    return [self initWithCroppingStyle:LLCropViewCroppingStyleDefault image:image];
 }
 
 - (void)viewDidLoad
@@ -110,7 +109,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
         [self.cropView setBackgroundImageViewHidden:YES animated:NO];
     }
     //设置相框比例
-    if (self.aspectRatioPreset != WYACropViewControllerAspectRatioPresetOriginal) {
+    if (self.aspectRatioPreset != LLCropViewControllerAspectRatioPresetOriginal) {
         [self setAspectRatioPreset:self.aspectRatioPreset animated:NO];
     }
 }
@@ -456,7 +455,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
         actionWithTitle:item
                   style:UIAlertActionStyleDefault
                 handler:^(UIAlertAction * _Nonnull action) {
-                    [self setAspectRatioPreset:(WYACropViewControllerAspectRatioPreset)i
+                    [self setAspectRatioPreset:(LLCropViewControllerAspectRatioPreset)i
                                       animated:YES];
                     self.aspectRatioLockEnabled = YES;
                 }];
@@ -468,7 +467,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)setAspectRatioPreset:(WYACropViewControllerAspectRatioPreset)aspectRatioPreset
+- (void)setAspectRatioPreset:(LLCropViewControllerAspectRatioPreset)aspectRatioPreset
                     animated:(BOOL)animated
 {
     CGSize aspectRatio = CGSizeZero;
@@ -476,31 +475,31 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
     _aspectRatioPreset = aspectRatioPreset;
 
     switch (aspectRatioPreset) {
-        case WYACropViewControllerAspectRatioPresetOriginal:
+        case LLCropViewControllerAspectRatioPresetOriginal:
             aspectRatio = CGSizeZero;
             break;
-        case WYACropViewControllerAspectRatioPresettSquare:
+        case LLCropViewControllerAspectRatioPresettSquare:
             aspectRatio = CGSizeMake(1.0f, 1.0f);
             break;
-        case WYACropViewControllerAspectRatioPreset3x2:
+        case LLCropViewControllerAspectRatioPreset3x2:
             aspectRatio = CGSizeMake(3.0f, 2.0f);
             break;
-        case WYACropViewControllerAspectRatioPreset5x3:
+        case LLCropViewControllerAspectRatioPreset5x3:
             aspectRatio = CGSizeMake(5.0f, 3.0f);
             break;
-        case WYACropViewControllerAspectRatioPreset4x3:
+        case LLCropViewControllerAspectRatioPreset4x3:
             aspectRatio = CGSizeMake(4.0f, 3.0f);
             break;
-        case WYACropViewControllerAspectRatioPreset5x4:
+        case LLCropViewControllerAspectRatioPreset5x4:
             aspectRatio = CGSizeMake(5.0f, 4.0f);
             break;
-        case WYACropViewControllerAspectRatioPreset7x5:
+        case LLCropViewControllerAspectRatioPreset7x5:
             aspectRatio = CGSizeMake(7.0f, 5.0f);
             break;
-        case WYACropViewControllerAspectRatioPreset16x9:
+        case LLCropViewControllerAspectRatioPreset16x9:
             aspectRatio = CGSizeMake(16.0f, 9.0f);
             break;
-        case WYACropViewControllerAspectRatioPresetCustom:
+        case LLCropViewControllerAspectRatioPresetCustom:
             aspectRatio = self.customAspectRatio;
             break;
     }
@@ -518,18 +517,18 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
     [self.cropView setAspectRatio:aspectRatio animated:animated];
 }
 
-#pragma mark - WYAImageCropViewDelegate
-- (void)cropViewDidBecomeResettable:(WYAImageCropView *)cropView
+#pragma mark - LLImageCropViewDelegate
+- (void)cropViewDidBecomeResettable:(LLImageCropView *)cropView
 {
     //    self.toolbar.resetButtonEnabled = YES;
 }
 
-- (void)cropViewDidBecomeNonResettable:(WYAImageCropView *)cropView
+- (void)cropViewDidBecomeNonResettable:(LLImageCropView *)cropView
 {
     //    self.toolbar.resetButtonEnabled = NO;
 }
 
-#pragma mark - WYAImageCropToolBarDelegate
+#pragma mark - LLImageCropToolBarDelegate
 - (void)rotatingAction
 {
     [self.cropView rotateImageNinetyDegreesAnimated:YES clockwise:NO];
@@ -596,10 +595,10 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
     respondsToSelector:@selector(cropViewController:didCropToImage:withRect:angle:)];
     BOOL isDidCropToImageCallbackAvailable = self.onDidCropToRect != nil;
 
-    if (self.croppingStyle == WYACropViewCroppingStyleCircular &&
+    if (self.croppingStyle == LLCropViewCroppingStyleCircular &&
         (isCircularImageDelegateAvailable || isCircularImageCallbackAvailable)) {
         UIImage * image =
-        [self.image wya_croppedImageWithFrame:cropFrame
+        [self.image ll_croppedImageWithFrame:cropFrame
                                         angle:angle
                                  circularClip:YES];
 
@@ -622,7 +621,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight   = 100.0f;
         if (angle == 0 && CGRectEqualToRect(cropFrame, (CGRect){CGPointZero, self.image.size})) {
             image = self.image;
         } else {
-            image = [self.image wya_croppedImageWithFrame:cropFrame angle:angle circularClip:NO];
+            image = [self.image ll_croppedImageWithFrame:cropFrame angle:angle circularClip:NO];
         }
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03f * NSEC_PER_SEC)),
@@ -663,7 +662,7 @@ animationControllerForPresentedController:(UIViewController *)presented
     __weak typeof(self) weakSelf                          = self;
     self.transitionController.prepareForTransitionHandler = ^{
         typeof(self) strongSelf                                 = weakSelf;
-        WYAImageCropViewControllerTransitioning * transitioning = strongSelf.transitionController;
+        LLImageCropViewControllerTransitioning * transitioning = strongSelf.transitionController;
 
         transitioning.toFrame = [strongSelf.cropView convertRect:strongSelf.cropView.cropBoxFrame
                                                           toView:strongSelf.view];
@@ -693,7 +692,7 @@ animationControllerForPresentedController:(UIViewController *)presented
     __weak typeof(self) weakSelf                          = self;
     self.transitionController.prepareForTransitionHandler = ^{
         typeof(self) strongSelf                                 = weakSelf;
-        WYAImageCropViewControllerTransitioning * transitioning = strongSelf.transitionController;
+        LLImageCropViewControllerTransitioning * transitioning = strongSelf.transitionController;
 
         if (!CGRectIsEmpty(transitioning.toFrame) || transitioning.toView) {
             strongSelf.cropView.croppingViewsHidden = YES;
@@ -729,7 +728,7 @@ animationControllerForPresentedController:(UIViewController *)presented
 - (void)setCustomAspectRatio:(CGSize)customAspectRatio
 {
     _customAspectRatio = customAspectRatio;
-    [self setAspectRatioPreset:WYACropViewControllerAspectRatioPresetCustom animated:NO];
+    [self setAspectRatioPreset:LLCropViewControllerAspectRatioPresetCustom animated:NO];
 }
 
 - (void)setAngle:(NSInteger)angle
@@ -743,11 +742,11 @@ animationControllerForPresentedController:(UIViewController *)presented
 }
 
 #pragma mark - Getter
-- (WYAImageCropView *)cropView
+- (LLImageCropView *)cropView
 {
     if (!_cropView) {
         _cropView =
-        [[WYAImageCropView alloc] initWithCroppingStyle:self.croppingStyle
+        [[LLImageCropView alloc] initWithCroppingStyle:self.croppingStyle
                                                   image:self.image];
         _cropView.delegate = self;
         _cropView.autoresizingMask =
@@ -757,10 +756,10 @@ animationControllerForPresentedController:(UIViewController *)presented
     return _cropView;
 }
 
-- (WYAImageCropToolBar *)toolbar
+- (LLImageCropToolBar *)toolbar
 {
     if (!_toolbar) {
-        _toolbar          = [[WYAImageCropToolBar alloc] initWithFrame:CGRectZero];
+        _toolbar          = [[LLImageCropToolBar alloc] initWithFrame:CGRectZero];
         _toolbar.delegate = self;
         [self.view addSubview:_toolbar];
     }

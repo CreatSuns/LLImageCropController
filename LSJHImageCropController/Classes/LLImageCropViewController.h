@@ -1,19 +1,18 @@
 //
-//  WYAImageCropViewController.h
-//  WYAKit
+//  LLImageCropViewController.h
 //
 //  Created by 李世航 on 2018/12/3.
 //
 
 #import <UIKit/UIKit.h>
 
-#import "WYAImageCrop.h"
-#import "WYAImageCropToolBar.h"
-#import "WYAImageCropView.h"
+#import "LLImageCrop.h"
+#import "LLImageCropToolBar.h"
+#import "LLImageCropView.h"
 
-@class WYAImageCropViewController;
+@class LLImageCropViewController;
 
-@protocol WYAImageCropViewControllerDelegate <NSObject>
+@protocol LLImageCropViewControllerDelegate <NSObject>
 @optional
 
 /**
@@ -23,7 +22,7 @@
  @param cropRect 矩形大小
  @param angle 角度
  */
-- (void)cropViewController:(nonnull WYAImageCropViewController *)cropViewController
+- (void)cropViewController:(nonnull LLImageCropViewController *)cropViewController
         didCropImageToRect:(CGRect)cropRect
                      angle:(NSInteger)angle;
 
@@ -35,7 +34,7 @@
  @param cropRect 裁剪的image坐标
  @param angle 角度
  */
-- (void)cropViewController:(nonnull WYAImageCropViewController *)cropViewController
+- (void)cropViewController:(nonnull LLImageCropViewController *)cropViewController
             didCropToImage:(nonnull UIImage *)image
                   withRect:(CGRect)cropRect
                      angle:(NSInteger)angle;
@@ -48,7 +47,7 @@
  @param cropRect 裁剪的image坐标
  @param angle 角度
  */
-- (void)cropViewController:(nonnull WYAImageCropViewController *)cropViewController
+- (void)cropViewController:(nonnull LLImageCropViewController *)cropViewController
     didCropToCircularImage:(nonnull UIImage *)image
                   withRect:(CGRect)cropRect
                      angle:(NSInteger)angle;
@@ -59,19 +58,19 @@
  @param cropViewController self
  @param cancelled YES
  */
-- (void)cropViewController:(nonnull WYAImageCropViewController *)cropViewController
+- (void)cropViewController:(nonnull LLImageCropViewController *)cropViewController
         didFinishCancelled:(BOOL)cancelled;
 
 @end
 
-@interface WYAImageCropViewController : UIViewController
+@interface LLImageCropViewController : UIViewController
 
-@property (nullable, nonatomic, weak) id<WYAImageCropViewControllerDelegate> delegate;
+@property (nullable, nonatomic, weak) id<LLImageCropViewControllerDelegate> delegate;
 /// 原始图片
 @property (nonnull, nonatomic, readonly) UIImage * image;
-@property (nonnull, nonatomic, strong, readonly) WYAImageCropView * cropView;
-@property (nonnull, nonatomic, strong, readonly) WYAImageCropToolBar * toolbar;
-@property (nonatomic, readonly) WYACropViewCroppingStyle croppingStyle;
+@property (nonnull, nonatomic, strong, readonly) LLImageCropView * cropView;
+@property (nonnull, nonatomic, strong, readonly) LLImageCropToolBar * toolbar;
+@property (nonatomic, readonly) LLCropViewCroppingStyle croppingStyle;
 @property (nullable, nonatomic, strong) void (^onDidFinishCancelled)(BOOL isFinished);
 @property (nullable, nonatomic, strong) void (^onDidCropImageToRect)(CGRect cropRect, NSInteger angle);
 @property (nullable, nonatomic, strong) void (^onDidCropToRect)(UIImage * _Nonnull image, CGRect cropRect, NSInteger angle);
@@ -93,7 +92,7 @@
  @param image 要裁剪的图片
  @return self
  */
-- (nonnull instancetype)initWithCroppingStyle:(WYACropViewCroppingStyle)style
+- (nonnull instancetype)initWithCroppingStyle:(LLCropViewCroppingStyle)style
                                         image:(nonnull UIImage *)image;
 
 @end

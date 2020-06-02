@@ -1,13 +1,12 @@
 //
-//  WYAImageCropScrollView.m
-//  WYAKit
+//  LLImageCropScrollView.m
 //
 //  Created by 李世航 on 2018/12/3.
 //
 
-#import "WYAImageCropScrollView.h"
+#import "LLImageCropScrollView.h"
 
-@implementation WYAImageCropScrollView
+@implementation LLImageCropScrollView
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

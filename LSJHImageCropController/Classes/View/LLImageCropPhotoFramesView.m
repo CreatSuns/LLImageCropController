@@ -1,15 +1,14 @@
 //
-//  WYAImageCropPhotoFramesView.m
-//  WYAKit
+//  LLImageCropPhotoFramesView.m
 //
 //  Created by 李世航 on 2018/12/3.
 //
 
-#import "WYAImageCropPhotoFramesView.h"
+#import "LLImageCropPhotoFramesView.h"
 
 static const CGFloat kTOCropOverLayerCornerWidth = 20.0f;
 
-@interface WYAImageCropPhotoFramesView ()
+@interface LLImageCropPhotoFramesView ()
 
 @property (nonatomic, strong) NSArray * horizontalGridLines;
 @property (nonatomic, strong) NSArray * verticalGridLines;
@@ -23,7 +22,7 @@ static const CGFloat kTOCropOverLayerCornerWidth = 20.0f;
 
 @end
 
-@implementation WYAImageCropPhotoFramesView
+@implementation LLImageCropPhotoFramesView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

@@ -25,7 +25,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WYAImageCropViewControllerTransitioning
+@interface LLImageCropViewControllerTransitioning
 : NSObject <UIViewControllerAnimatedTransitioning>
 
 /* State Tracking */

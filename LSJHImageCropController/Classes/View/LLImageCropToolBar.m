@@ -1,13 +1,12 @@
 //
-//  WYAImageCropToolBar.m
-//  WYAKit
+//  LLImageCropToolBar.m
 //
 //  Created by 李世航 on 2018/12/3.
 //
 
-#import "WYAImageCropToolBar.h"
+#import "LLImageCropToolBar.h"
 
-@interface WYAImageCropToolBar ()
+@interface LLImageCropToolBar ()
 @property (nonatomic, strong) UIView * line;
 @property (nonatomic, strong) UIButton * rotatingButton;
 @property (nonatomic, strong) UIButton * cancelButton;
@@ -16,7 +15,7 @@
 
 @end
 
-@implementation WYAImageCropToolBar
+@implementation LLImageCropToolBar
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -26,7 +25,7 @@
 
         self.rotatingButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.rotatingButton
-        setImage:[UIImage loadBundleImage:@"xuanzhuan" ClassName:NSStringFromClass(self.class)]
+         setImage:[UIImage ll_loadBundleImage:@"xuanzhuan" ClassName:NSStringFromClass(self.class) bundleName:@"LSJHImageCropController"]
         forState:UIControlStateNormal];
         [self.rotatingButton addTarget:self
                                 action:@selector(rotatingClick)
@@ -38,8 +37,8 @@
         [self addSubview:self.line];
 
         self.cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.cancelButton setImage:[UIImage loadBundleImage:@"icon_subtract_enable"
-                                                   ClassName:NSStringFromClass(self.class)]
+        [self.cancelButton setImage:[UIImage ll_loadBundleImage:@"icon_subtract_enable"
+                                                   ClassName:NSStringFromClass(self.class) bundleName:@"LSJHImageCropController"]
                            forState:UIControlStateNormal];
         [self.cancelButton addTarget:self
                               action:@selector(cancelClick)
@@ -47,8 +46,8 @@
         [self addSubview:self.cancelButton];
 
         self.doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.doneButton setImage:[UIImage loadBundleImage:@"icon_radio_selected"
-                                                 ClassName:NSStringFromClass(self.class)]
+        [self.doneButton setImage:[UIImage ll_loadBundleImage:@"icon_radio_selected"
+                                                 ClassName:NSStringFromClass(self.class) bundleName:@"LSJHImageCropController"]
                          forState:UIControlStateNormal];
         [self.doneButton addTarget:self
                             action:@selector(doneClick)

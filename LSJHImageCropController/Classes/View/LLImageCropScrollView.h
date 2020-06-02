@@ -1,6 +1,5 @@
 //
-//  WYAImageCropScrollView.h
-//  WYAKit
+//  LLImageCropScrollView.h
 //
 //  Created by 李世航 on 2018/12/3.
 //
@@ -9,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WYAImageCropScrollView : UIScrollView
+@interface LLImageCropScrollView : UIScrollView
 @property (nullable, nonatomic, copy) void (^touchesBegan)(void);
 @property (nullable, nonatomic, copy) void (^touchesCancelled)(void);
 @property (nullable, nonatomic, copy) void (^touchesEnded)(void);

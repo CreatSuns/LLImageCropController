@@ -1,14 +1,13 @@
 //
-//  WYAImageCropView.m
-//  WYAKit
+//  LLImageCropView.m
 //
 //  Created by 李世航 on 2018/12/3.
 //
 #include <math.h>
 
-#import "WYAImageCropPhotoFramesView.h"
-#import "WYAImageCropScrollView.h"
-#import "WYAImageCropView.h"
+#import "LLImageCropPhotoFramesView.h"
+#import "LLImageCropScrollView.h"
+#import "LLImageCropView.h"
 
 #define TOCROPVIEW_BACKGROUND_COLOR [UIColor colorWithWhite:0.12f alpha:1.0f]
 
@@ -20,19 +19,19 @@ static const CGFloat kTOMaximumZoomScale           = 15.0f;
 
 /* When the user taps down to resize the box, this state is used
  to determine where they tapped and how to manipulate the box */
-typedef NS_ENUM(NSInteger, WYACropViewOverlayEdge) {
-    WYACropViewOverlayEdgeNone,
-    WYACropViewOverlayEdgeTopLeft,
-    WYACropViewOverlayEdgeTop,
-    WYACropViewOverlayEdgeTopRight,
-    WYACropViewOverlayEdgeRight,
-    WYACropViewOverlayEdgeBottomRight,
-    WYACropViewOverlayEdgeBottom,
-    WYACropViewOverlayEdgeBottomLeft,
-    WYACropViewOverlayEdgeLeft
+typedef NS_ENUM(NSInteger, LLCropViewOverlayEdge) {
+    LLCropViewOverlayEdgeNone,
+    LLCropViewOverlayEdgeTopLeft,
+    LLCropViewOverlayEdgeTop,
+    LLCropViewOverlayEdgeTopRight,
+    LLCropViewOverlayEdgeRight,
+    LLCropViewOverlayEdgeBottomRight,
+    LLCropViewOverlayEdgeBottom,
+    LLCropViewOverlayEdgeBottomLeft,
+    LLCropViewOverlayEdgeLeft
 };
 
-@interface WYAImageCropView () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
+@interface LLImageCropView () <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong, readwrite) UIImage * image;
 
@@ -46,7 +45,7 @@ UIView * backgroundContainerView; /* A view which contains the background image
 @property (nonatomic, strong, readwrite) UIView * foregroundContainerView;
 @property (nonatomic, strong) UIImageView *
 foregroundImageView; /* A copy of the background image view, placed over the dimming views */
-@property (nonatomic, strong) WYAImageCropScrollView *
+@property (nonatomic, strong) LLImageCropScrollView *
 scrollView; /* The scroll view in charge of panning/zooming the image. */
 @property (nonatomic, strong) UIView *
 overlayView; /* A semi-transparent grey view, overlaid on top of the background image */
@@ -55,7 +54,7 @@ UIView * translucencyView; /* A blur view that is made visible when the user isn
                                   with the crop view */
 @property (nonatomic, strong)
 id translucencyEffect; /* The dark blur visual effect applied to the visual effect view. */
-@property (nonatomic, strong, readwrite) WYAImageCropPhotoFramesView *
+@property (nonatomic, strong, readwrite) LLImageCropPhotoFramesView *
 gridOverlayView; /* A grid view overlaid on top of the foreground image view's container. */
 @property (nonatomic, strong) CAShapeLayer *
 circularMaskLayer; /* Managing the clipping of the foreground container into a circle */
@@ -72,7 +71,7 @@ BOOL applyInitialCroppedImageFrame; /* No by default, when setting
                                            initialCroppedImageFrame this will be set
                                            to YES, and set back to NO after first
                                            application - so it's only done once */
-@property (nonatomic, assign) WYACropViewOverlayEdge
+@property (nonatomic, assign) LLCropViewOverlayEdge
 tappedEdge; /* The edge region that the user tapped on, to resize the cropping region */
 @property (nonatomic, assign)
 CGRect cropOriginFrame; /* When resizing, this is the original frame of the crop box. */
@@ -140,14 +139,14 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
 
 @end
 
-@implementation WYAImageCropView
+@implementation LLImageCropView
 
 - (instancetype)initWithImage:(UIImage *)image
 {
-    return [self initWithCroppingStyle:WYACropViewCroppingStyleDefault image:image];
+    return [self initWithCroppingStyle:LLCropViewCroppingStyleDefault image:image];
 }
 
-- (instancetype)initWithCroppingStyle:(WYACropViewCroppingStyle)style image:(UIImage *)image
+- (instancetype)initWithCroppingStyle:(LLCropViewCroppingStyle)style image:(UIImage *)image
 {
     if (self = [super init]) {
         _image         = image;
@@ -162,7 +161,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
 {
     __weak typeof(self) weakSelf = self;
 
-    BOOL circularMode = (self.croppingStyle == WYACropViewCroppingStyleCircular);
+    BOOL circularMode = (self.croppingStyle == LLCropViewCroppingStyleCircular);
 
     // View properties
     self.autoresizingMask              = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -187,7 +186,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
      NSOrderedAscending);
 
     // Scroll View properties
-    self.scrollView = [[WYAImageCropScrollView alloc] initWithFrame:self.bounds];
+    self.scrollView = [[LLImageCropScrollView alloc] initWithFrame:self.bounds];
     self.scrollView.autoresizingMask =
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.scrollView.alwaysBounceHorizontal         = YES;
@@ -270,7 +269,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
 
     // The white grid overlay view
     self.gridOverlayView =
-    [[WYAImageCropPhotoFramesView alloc] initWithFrame:self.foregroundContainerView.frame];
+    [[LLImageCropPhotoFramesView alloc] initWithFrame:self.foregroundContainerView.frame];
     self.gridOverlayView.userInteractionEnabled = NO;
     self.gridOverlayView.gridHidden             = YES;
     [self addSubview:self.gridOverlayView];
@@ -499,7 +498,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
     BOOL clampMinFromTop = NO, clampMinFromLeft = NO;
 
     switch (self.tappedEdge) {
-        case WYACropViewOverlayEdgeLeft:
+        case LLCropViewOverlayEdgeLeft:
             if (self.aspectRatioLockEnabled) {
                 aspectHorizontal = YES;
                 xDelta           = MAX(xDelta, 0);
@@ -519,7 +518,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
             clampMinFromLeft = YES;
 
             break;
-        case WYACropViewOverlayEdgeRight:
+        case LLCropViewOverlayEdgeRight:
             if (self.aspectRatioLockEnabled) {
                 aspectHorizontal = YES;
                 CGPoint scaleOrigin =
@@ -538,7 +537,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
             }
 
             break;
-        case WYACropViewOverlayEdgeBottom:
+        case LLCropViewOverlayEdgeBottom:
             if (self.aspectRatioLockEnabled) {
                 aspectVertical = YES;
                 CGPoint scaleOrigin =
@@ -557,7 +556,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
                 }
             }
             break;
-        case WYACropViewOverlayEdgeTop:
+        case LLCropViewOverlayEdgeTop:
             if (self.aspectRatioLockEnabled) {
                 aspectVertical = YES;
                 yDelta         = MAX(0, yDelta);
@@ -581,7 +580,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
             clampMinFromTop = YES;
 
             break;
-        case WYACropViewOverlayEdgeTopLeft:
+        case LLCropViewOverlayEdgeTopLeft:
             if (self.aspectRatioLockEnabled) {
                 xDelta = MAX(xDelta, 0);
                 yDelta = MAX(yDelta, 0);
@@ -618,7 +617,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
             clampMinFromLeft = YES;
 
             break;
-        case WYACropViewOverlayEdgeTopRight:
+        case LLCropViewOverlayEdgeTopRight:
             if (self.aspectRatioLockEnabled) {
                 xDelta = MIN(xDelta, 0);
                 yDelta = MAX(yDelta, 0);
@@ -651,7 +650,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
             clampMinFromTop = YES;
 
             break;
-        case WYACropViewOverlayEdgeBottomLeft:
+        case LLCropViewOverlayEdgeBottomLeft:
             if (self.aspectRatioLockEnabled) {
                 CGPoint distance;
                 distance.x = 1.0f - (xDelta / CGRectGetWidth(originFrame));
@@ -680,7 +679,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
             clampMinFromLeft = YES;
 
             break;
-        case WYACropViewOverlayEdgeBottomRight:
+        case LLCropViewOverlayEdgeBottomRight:
             if (self.aspectRatioLockEnabled) {
                 CGPoint distance;
                 distance.x = 1.0f - ((-1 * xDelta) / CGRectGetWidth(originFrame));
@@ -704,7 +703,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
                 }
             }
             break;
-        case WYACropViewOverlayEdgeNone:
+        case LLCropViewOverlayEdgeNone:
             break;
     }
 
@@ -947,7 +946,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
     self.resetTimer = nil;
 }
 
-- (WYACropViewOverlayEdge)cropEdgeForPoint:(CGPoint)point
+- (LLCropViewOverlayEdge)cropEdgeForPoint:(CGPoint)point
 {
     CGRect frame = self.cropBoxFrame;
 
@@ -956,36 +955,36 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
 
     // Make sure the corners take priority
     CGRect topLeftRect = (CGRect){frame.origin, {64, 64}};
-    if (CGRectContainsPoint(topLeftRect, point)) return WYACropViewOverlayEdgeTopLeft;
+    if (CGRectContainsPoint(topLeftRect, point)) return LLCropViewOverlayEdgeTopLeft;
 
     CGRect topRightRect   = topLeftRect;
     topRightRect.origin.x = CGRectGetMaxX(frame) - 64.0f;
-    if (CGRectContainsPoint(topRightRect, point)) return WYACropViewOverlayEdgeTopRight;
+    if (CGRectContainsPoint(topRightRect, point)) return LLCropViewOverlayEdgeTopRight;
 
     CGRect bottomLeftRect   = topLeftRect;
     bottomLeftRect.origin.y = CGRectGetMaxY(frame) - 64.0f;
-    if (CGRectContainsPoint(bottomLeftRect, point)) return WYACropViewOverlayEdgeBottomLeft;
+    if (CGRectContainsPoint(bottomLeftRect, point)) return LLCropViewOverlayEdgeBottomLeft;
 
     CGRect bottomRightRect   = topRightRect;
     bottomRightRect.origin.y = bottomLeftRect.origin.y;
-    if (CGRectContainsPoint(bottomRightRect, point)) return WYACropViewOverlayEdgeBottomRight;
+    if (CGRectContainsPoint(bottomRightRect, point)) return LLCropViewOverlayEdgeBottomRight;
 
     // Check for edges
     CGRect topRect = (CGRect){frame.origin, {CGRectGetWidth(frame), 64.0f}};
-    if (CGRectContainsPoint(topRect, point)) return WYACropViewOverlayEdgeTop;
+    if (CGRectContainsPoint(topRect, point)) return LLCropViewOverlayEdgeTop;
 
     CGRect bottomRect   = topRect;
     bottomRect.origin.y = CGRectGetMaxY(frame) - 64.0f;
-    if (CGRectContainsPoint(bottomRect, point)) return WYACropViewOverlayEdgeBottom;
+    if (CGRectContainsPoint(bottomRect, point)) return LLCropViewOverlayEdgeBottom;
 
     CGRect leftRect = (CGRect){frame.origin, {64.0f, CGRectGetHeight(frame)}};
-    if (CGRectContainsPoint(leftRect, point)) return WYACropViewOverlayEdgeLeft;
+    if (CGRectContainsPoint(leftRect, point)) return LLCropViewOverlayEdgeLeft;
 
     CGRect rightRect   = leftRect;
     rightRect.origin.x = CGRectGetMaxX(frame) - 64.0f;
-    if (CGRectContainsPoint(rightRect, point)) return WYACropViewOverlayEdgeRight;
+    if (CGRectContainsPoint(rightRect, point)) return LLCropViewOverlayEdgeRight;
 
-    return WYACropViewOverlayEdgeNone;
+    return LLCropViewOverlayEdgeNone;
 }
 
 #pragma mark - Scroll View Delegate -
@@ -1337,7 +1336,7 @@ CGPoint originalContentOffset; /* Save the original content offset so we can tel
     CGFloat duration = editing ? 0.05f : 0.35f;
     CGFloat delay    = editing ? 0.0f : 0.35f;
 
-    if (self.croppingStyle == WYACropViewCroppingStyleCircular) {
+    if (self.croppingStyle == LLCropViewCroppingStyleCircular) {
         delay = 0.0f;
     }
 
